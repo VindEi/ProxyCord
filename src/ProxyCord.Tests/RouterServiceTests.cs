@@ -132,5 +132,15 @@ namespace ProxyCord.Tests
             Assert.InRange(tcpPort, 1, 65535);
             Assert.InRange(udpPort, 1, 65535);
         }
+
+        [Fact]
+        public void AppIcon_ExistsAndIsValid()
+        {
+            var testDir = AppContext.BaseDirectory;
+            var projectDir = Path.GetFullPath(Path.Combine(testDir, "..", "..", "..", "..", "ProxyCord"));
+            var iconPath = Path.Combine(projectDir, "app.ico");
+            Assert.True(File.Exists(iconPath), $"app.ico should exist at {iconPath}");
+            Assert.True(new FileInfo(iconPath).Length > 10000, "app.ico should be larger than 10KB");
+        }
     }
 }

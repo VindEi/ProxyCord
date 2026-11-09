@@ -15,23 +15,20 @@
 
 ## What is ProxyCord?
 
-In many regions and restricted network environments, Discord is blocked, throttled, or subjected to severe packet loss. Turning on a system-wide VPN or TUN proxy solves the problem for Discord, but routes **all** your network traffic (Steam games, web browsers, torrents, work apps) through the proxy—introducing latency spikes in online games, wasting bandwidth, and breaking local network access.
+In many regions and restricted network environments, Discord is blocked, throttled, or subjected to severe packet loss. Turning on a system-wide VPN or TUN proxy solves the problem for Discord, but routes **all** your network traffic (Steam games, web browsers, torrents, work apps) through the proxy introducing latency spikes in online games, wasting bandwidth, and breaking local network access.
 
 **ProxyCord** solves this by creating a dedicated virtual network adapter that captures **only Discord traffic**. All other applications on your PC continue communicating directly through your physical network card with zero latency penalty.
 
 ---
-
-## Key Features
 
 - **Single Portable Executable (`ProxyCord.exe`)**: Completely self-contained ~22 MB binary with no installers, external runtime requirements, or loose DLL files.
 - **Dedicated Virtual Adapter (`ProxyCord`)**: Configures a dedicated Wintun virtual network interface cleanly named `ProxyCord` in Windows Network Connections.
 - **Independent Protocol Toggles**:
   - **TCP (Chat & Gateway)**: Routes text messages, WebSocket gateway connections, embeds, and updates through the proxy.
   - **UDP (Voice & WebRTC)**: Routes Discord voice channels, screen share streams, and Opus audio packets through the proxy.
-- **Zero-Disruption Live Reload**: Toggling TCP or UDP updates routing rules on the fly via an internal REST API without restarting the TUN driver or dropping active voice calls.
+- **Live Reload**: Toggling TCP or UDP updates routing rules on the fly .
 - **Live Upstream Probe**: Verifies your proxy is reachable using non-blocking TCP handshakes with cancellation timeouts, accurately indicating whether traffic is actively flowing or if the upstream proxy is down.
 - **Flexible Proxy Formats**: Supports port numbers (`2080`), host-port pairs (`127.0.0.1:10808`, `192.168.1.50:8080`), and full authenticated URIs (`socks5://user:pass@host:port` or `http://host:port`).
-- **Modern Interface**: Designed with Obsidian Dark and Studio Light modes, concentric tactile power button, real-time activity log viewer, and smart system tray minimization.
 
 ---
 

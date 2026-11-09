@@ -41,17 +41,22 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <!-- Top Brand Monogram -->
-                    <Border Grid.Row="0" Width="26" Height="26" CornerRadius="7" 
-                            HorizontalAlignment="Center" Margin="0,0,0,16" MouseDown="TitleBar_MouseDown" Cursor="Hand" ToolTip="ProxyCord">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#2563EB" Offset="0" />
-                                <GradientStop Color="#1D4ED8" Offset="1" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <TextBlock Text="P" Foreground="#FFFFFF" FontWeight="Bold" FontSize="12.5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
-                    </Border>
+                    <!-- Top Brand Icon -->
+                    <Viewbox Grid.Row="0" Width="26" Height="26" 
+                             HorizontalAlignment="Center" Margin="0,0,0,16" MouseDown="TitleBar_MouseDown" Cursor="Hand" ToolTip="ProxyCord">
+                        <Canvas Width="256" Height="256">
+                            <!-- Squircle Background Tile -->
+                            <Rectangle Width="256" Height="256" RadiusX="58" RadiusY="58" Fill="#141724" Stroke="#252A3D" StrokeThickness="2" />
+                            <!-- Direct traffic lane -->
+                            <Line X1="76" Y1="64" X2="76" Y2="192" Stroke="#3B4259" StrokeThickness="22" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            <Ellipse Canvas.Left="70" Canvas.Top="186" Width="12" Height="12" Fill="#64748B" />
+                            <!-- Split bypass loop (Proxy lane) forming P -->
+                            <Path Data="M 120,192 L 120,64 L 158,64 A 44,44 0 0 1 158,152 L 120,152" 
+                                  Stroke="#5865F2" StrokeThickness="22" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                            <!-- Routing indicator dot -->
+                            <Ellipse Canvas.Left="152" Canvas.Top="100" Width="16" Height="16" Fill="#38BDF8" />
+                        </Canvas>
+                    </Viewbox>
 
                     <!-- Nav Icons Stack (Clean 1.5px Stroke Line Icons) -->
                     <StackPanel Grid.Row="1" HorizontalAlignment="Center">
