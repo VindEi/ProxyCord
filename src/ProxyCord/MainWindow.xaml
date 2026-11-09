@@ -1,0 +1,241 @@
+<Window x:Class="ProxyCord.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ProxyCord" 
+        Height="330" Width="480"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        ResizeMode="CanMinimize"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
+
+    <Border x:Name="RootBorder" 
+            Background="{DynamicResource WindowBg}" 
+            CornerRadius="10" 
+            BorderBrush="{DynamicResource WindowBorder}" 
+            BorderThickness="1"
+            ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.3" Color="#000000" />
+        </Border.Effect>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!-- Quiet Left Sidebar Rail (48px) -->
+                <ColumnDefinition Width="48" />
+                <!-- Content Area -->
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- ================= SIDEBAR RAIL ================= -->
+            <Border Grid.Column="0" Background="{DynamicResource SidebarBg}" BorderBrush="{DynamicResource BorderMuted}" BorderThickness="0,0,1,0">
+                <Grid Margin="0,12,0,12">
+                    <Grid.RowDefinitions>
+                        <!-- App Brand Monogram -->
+                        <RowDefinition Height="Auto" />
+                        <!-- Navigation Icons -->
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Top Brand Monogram -->
+                    <Border Grid.Row="0" Width="26" Height="26" CornerRadius="7" 
+                            HorizontalAlignment="Center" Margin="0,0,0,16" MouseDown="TitleBar_MouseDown" Cursor="Hand" ToolTip="ProxyCord">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#2563EB" Offset="0" />
+                                <GradientStop Color="#1D4ED8" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <TextBlock Text="P" Foreground="#FFFFFF" FontWeight="Bold" FontSize="12.5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
+                    </Border>
+
+                    <!-- Nav Icons Stack (Clean 1.5px Stroke Line Icons) -->
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                        <!-- Dashboard (LayoutGrid) -->
+                        <RadioButton x:Name="NavMain" Style="{StaticResource SidebarIconBtnStyle}" IsChecked="True" Checked="Nav_Checked" ToolTip="Dashboard">
+                            <Path Width="14" Height="14" Stretch="Uniform" 
+                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                  StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  Data="M3 3h6v6H3V3zm10 0h6v6h-6V3zm0 10h6v6h-6v-6zm-10 0h6v6H3v-6z" />
+                        </RadioButton>
+
+                        <!-- Settings (Sliders) -->
+                        <RadioButton x:Name="NavSettings" Style="{StaticResource SidebarIconBtnStyle}" Checked="Nav_Checked" ToolTip="Settings">
+                            <Path Width="14" Height="14" Stretch="Uniform" 
+                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                  StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  Data="M4 21v-7m0-4V3m8 21v-9m0-4V3m8 21v-5m0-4V3M1 14h6m2-6h6m2 8h6" />
+                        </RadioButton>
+
+                        <!-- Logs (Terminal) -->
+                        <RadioButton x:Name="NavLogs" Style="{StaticResource SidebarIconBtnStyle}" Checked="Nav_Checked" ToolTip="Activity logs">
+                            <Path Width="14" Height="14" Stretch="Uniform" 
+                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                  StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                  Data="M4 17l6-6-6-6 M12 19h8" />
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ================= RIGHT MAIN AREA ================= -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <!-- Window Top Header -->
+                    <RowDefinition Height="32" />
+                    <!-- Body Content -->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Top Header Bar -->
+                <Grid Grid.Row="0" MouseDown="TitleBar_MouseDown" Background="Transparent" Margin="16,0,8,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="TxtPageTitle" Text="Dashboard" FontWeight="SemiBold" FontSize="12" 
+                                   Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="TxtHeaderEndpoint" Text="" FontFamily="Cascadia Mono, Consolas, Segoe UI" FontSize="10.5" 
+                                   Foreground="{DynamicResource TextMuted}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- Window Control Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="—" Style="{StaticResource WindowCtrlBtn}" Click="BtnMinimize_Click" Margin="0,0,2,0" />
+                        <Button Content="✕" Style="{StaticResource WindowCloseBtn}" Click="BtnClose_Click" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- ================= PAGE 1: DASHBOARD ================= -->
+                <Grid x:Name="PageMain" Grid.Row="1">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-4,0,0">
+                        <!-- Tactile Concentric Power Dial -->
+                        <Button x:Name="BtnConnectToggle" Style="{StaticResource HeroPowerBtnStyle}" Click="BtnConnectToggle_Click" />
+
+                        <!-- Status Pill / Label Below Button -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,14,0,0">
+                            <Ellipse x:Name="DotStatus" Width="6" Height="6" Fill="{DynamicResource StatusDotColor}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                            <TextBlock x:Name="TxtStatusLabel" Text="Disconnected" FontWeight="Medium" FontSize="12" 
+                                       Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!-- Tactile Protocol Toggles (TCP / UDP) -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
+                            <!-- TCP Chip -->
+                            <CheckBox x:Name="ChkRouteTcp" Style="{StaticResource ProtocolChipStyle}" 
+                                      Click="Toggle_Click" ToolTip="TCP • Chat messages, media &amp; startup updates" Margin="0,0,10,0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Path Width="12.5" Height="12.5" Stretch="Uniform" 
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=CheckBox}}"
+                                          StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Data="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" Margin="0,0,6,0" />
+                                    <TextBlock Text="TCP" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </CheckBox>
+
+                            <!-- UDP Chip -->
+                            <CheckBox x:Name="ChkRouteUdp" Style="{StaticResource ProtocolChipStyle}" 
+                                      Click="Toggle_Click" ToolTip="UDP • Voice channels &amp; WebRTC audio calls">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Path Width="12.5" Height="12.5" Stretch="Uniform" 
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=CheckBox}}"
+                                          StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Data="M3 18v-6a9 9 0 0 1 18 0v6 M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" Margin="0,0,6,0" />
+                                    <TextBlock Text="UDP" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ================= PAGE 2: SETTINGS ================= -->
+                <Grid x:Name="PageSettings" Grid.Row="1" Margin="20,4,20,16" Visibility="Collapsed">
+                    <StackPanel>
+                        <!-- Proxy Endpoint Card -->
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="8" BorderBrush="{DynamicResource BorderMuted}" BorderThickness="1" Padding="14,9" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Margin="0,0,0,6">
+                                    <TextBlock Text="Proxy endpoint" FontWeight="SemiBold" FontSize="11.5" Foreground="{DynamicResource TextPrimary}" />
+                                    <TextBlock Text="SOCKS5 or HTTP upstream address (port, host:port, or URL)" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
+                                </StackPanel>
+                                <TextBox x:Name="TxtProxyEndpoint" Grid.Row="1" Style="{StaticResource CleanInputStyle}" 
+                                         Text="127.0.0.1:2080" LostFocus="TxtProxyEndpoint_LostFocus" KeyDown="TxtProxyEndpoint_KeyDown" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Theme Appearance Switch Card -->
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="8" BorderBrush="{DynamicResource BorderMuted}" BorderThickness="1" Padding="14,9" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Interface theme" FontWeight="SemiBold" FontSize="11.5" Foreground="{DynamicResource TextPrimary}" />
+                                    <TextBlock Text="Select light or dark appearance" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
+                                </StackPanel>
+                                <Border Grid.Column="1" Background="{DynamicResource SegmentContainerBg}" CornerRadius="6" Padding="2" BorderBrush="{DynamicResource BorderMuted}" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton x:Name="RadioThemeLight" Content="Light" Style="{StaticResource ThemeSegmentBtnStyle}" Click="ThemeSwitch_Click" />
+                                        <RadioButton x:Name="RadioThemeDark" Content="Dark" Style="{StaticResource ThemeSegmentBtnStyle}" Click="ThemeSwitch_Click" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Close Button Behavior Card -->
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="8" BorderBrush="{DynamicResource BorderMuted}" BorderThickness="1" Padding="14,9">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Minimize to tray on close" FontWeight="SemiBold" FontSize="11.5" Foreground="{DynamicResource TextPrimary}" />
+                                    <TextBlock Text="Keep routing running in system tray when window is closed" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="ChkCloseToTray" Grid.Column="1" Style="{StaticResource ModernSwitchStyle}" 
+                                          Click="ChkCloseToTray_Click" VerticalAlignment="Center" ToolTip="When off, close button will completely exit the app" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ================= PAGE 3: LOGS ================= -->
+                <Grid x:Name="PageLogs" Grid.Row="1" Margin="20,8,20,16" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Console Monospace Console with Modern Dark Scrollbar -->
+                    <Border Grid.Row="0" Background="{DynamicResource LogBg}" CornerRadius="8" 
+                            BorderBrush="{DynamicResource BorderMuted}" BorderThickness="1" Padding="10" Margin="0,0,0,10">
+                        <ScrollViewer x:Name="LogScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <TextBox x:Name="TxtLogs" Background="Transparent" Foreground="{DynamicResource LogText}" 
+                                     BorderThickness="0" FontFamily="Cascadia Code, Cascadia Mono, Consolas, Courier New" FontSize="10.5" 
+                                     IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" />
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Bottom Buttons -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Copy logs" Style="{StaticResource SecondaryBtnStyle}" Padding="14,5" Click="BtnCopyLogs_Click" />
+                        <Button Grid.Column="2" Content="Clear" Style="{StaticResource SecondaryBtnStyle}" Padding="14,5" Click="BtnClearLogs_Click" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
